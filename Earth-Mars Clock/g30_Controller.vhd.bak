@@ -1,0 +1,196 @@
+-- entity name:g30_Controller 
+--
+-- Copyright (c) 2014 Bo Zheng and Habib Ahmed
+-- Version 1.0
+-- Author: Bo Zheng; Habib Ahmed;bo.zheng@mail.mcgill.ca;habib.ahmed@mail.mcgill.ca
+-- Date: Jan 23rd, 2014
+
+
+-- entity name:g30_Controller 
+--
+-- Copyright (c) 2014 Bo Zheng and Habib Ahmed
+-- Version 1.0
+-- Author: Bo Zheng; Habib Ahmed;bo.zheng@mail.mcgill.ca;habib.ahmed@mail.mcgill.ca
+-- Date: Jan 23rd, 2014
+library ieee;
+use ieee.std_logic_1164.all; -- allows use of the std_logic_vector type
+use ieee.numeric_std.all; -- allows use of the unsigned type
+
+
+entity g30_Controller is
+port(
+clock, reset, w:in std_logic;
+enable,display_en,zone_en,Eload_en,Mload_en,EDload_en, sychr_en:out std_logic);
+
+end g30_Controller;
+
+architecture behavior of g30_Controller is
+
+	COMPONENT g30_Basic_Timer
+	PORT(
+		reset: in std_logic; 
+		clk: in std_logic;
+		enable:in std_logic;
+		EPULSE: out std_logic;
+		MPULSE: out std_logic
+	);
+	end COMPONENT;
+	
+--define the state name and signals	
+TYPE State_type is (A,B,C,D,E,F);
+signal y_present, y_next: State_type;
+signal e_sec_clock,m_sec_clock: std_logic;
+
+--signal enbale:std_logic;
+begin
+--using the epulse produced from the Basic_timer to enable the state change, so that it make sure 'w' wont be read multiple times during one press on the push button
+basicTimer: g30_Basic_Timer
+	PORT MAP(
+		reset => reset,
+		clk => clock,
+		enable => '1',
+		EPULSE => e_sec_clock,
+		MPULSE => m_sec_clock
+	);
+	
+process (w,y_present)
+
+begin 
+--	w_past<=w_present;
+--	w_present<=w;
+	
+--	if w_present = w_past then
+--		y_next<=y_present;
+--	else
+
+		case y_present is 
+			when A=>
+				y_next<=A;
+				if w='1' then
+				y_next<=B;
+		 
+				end if;
+			when B=>
+				if w='1' then 
+					y_next<=C;
+			
+				else
+					y_next<=B;
+			
+				end if;
+		
+			when C=>
+				if w='1' then
+					y_next<=D;
+			
+				else
+					y_next<=C;
+				end if;
+			
+			when D=>
+				if w='1' then
+					y_next<=E;
+			
+				else
+					y_next<=D;
+				end if;
+				
+			when E=>
+				if w='1' then
+					y_next<=F;
+			
+				else
+					y_next<=E;
+				end if;
+			when F=>
+				if w='1' then 
+					y_next<=A;
+			
+				else
+					y_next<=F;
+				end if;
+		end case;
+--	end if;
+end process;
+
+
+--process block for the present and next states exchanging and reset
+Process (clock,reset)
+
+begin
+
+if reset='1' then
+y_present<=A;
+elsif( clock'event and clock='1') then 
+	if e_sec_clock='1' then
+		y_present<=y_next;
+	end if;
+end if;
+
+end process;
+
+
+--process block defines the outputs in each state
+process (y_present)
+
+begin
+Case y_present is
+--the first state is display state, it display the times and dates. 
+-- the enable signal is for the HMS counter, which needs be "1" all the time because the counter is running 
+when A=>
+	enable<='1';
+	display_en<='1';
+	Eload_en <='0';
+	Mload_en <='0';
+	zone_en<='0';
+	EDload_en <='0';
+	sychr_en<='0';
+
+when B=>
+	enable<='1';
+	display_en<='0';
+	zone_en<='1';
+	Eload_en <='0';
+	Mload_en <='0';
+	EDload_en <='0';
+	sychr_en<='0';
+ 
+when C=>
+	enable<='1';
+	display_en<='0';
+	zone_en<='0';
+	Eload_en <='1';
+	Mload_en <='0';
+	EDload_en <='0';
+	sychr_en<='0';
+
+when D=>
+	enable<='1';
+	display_en<='0';
+	zone_en<='0';
+	Eload_en <='1';
+	Mload_en <='0';
+	EDload_en <='1';
+	sychr_en<='0';
+
+when E=>
+	enable<='1';
+	display_en<='0';
+	zone_en<='0';
+	Eload_en <='0';
+	Mload_en <='0';
+	EDload_en <='0';
+	sychr_en<='1';
+when F=>
+	enable<='1';
+	display_en<='0';
+	zone_en<='0';
+	Eload_en <='0';
+	Mload_en <='1';
+	EDload_en <='0';
+	sychr_en<='0';
+end case;
+
+end process;
+
+end behavior;

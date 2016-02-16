@@ -1,0 +1,215 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.std_logic_unsigned.all;
+
+
+
+entity g30_UTC_to_MTC is
+
+ 
+--'f' means the earth time
+ Port( enable,clock,reset: in std_logic;
+		
+		load_enable: in std_logic;
+		Ehour_f: in std_logic_vector(4 downto 0);
+		Eminute_f, Esecond_f: in std_logic_vector(5 downto 0);--Eminute_s, Esecond_s,
+		Eyear_f: in std_logic_vector (11 downto 0);--Eyear_s,
+		Emonth_f: in std_logic_vector (3 downto 0);--Emonth_s,
+		Eday_f: in std_logic_vector (4 downto 0);--Eday_s,
+		
+		MTC:out unsigned(74 downto 0);
+		MHours: out std_logic_vector(4 downto 0);
+		MMinutes,MSeconds: out std_logic_vector(5 downto 0);
+		
+		
+		JD2000: out unsigned(54 downto 0));
+		--nd: out unsigned (14 downto 0);
+		--df: out unsigned (39 downto 0);
+		--yd,eod,ep: out std_logic;
+		--YR: out  std_logic_vector (11 downto 0);
+		--hr: out std_logic_vector(4 downto 0);
+		--se,mt: out std_logic_vector( 5 downto 0));
+
+end g30_UTC_to_MTC;
+
+architecture behavior of g30_UTC_to_MTC is
+		
+component g30_Basic_Timer
+port( reset: in std_logic; 
+		clk: in std_logic;
+		enable:in std_logic;
+		EPULSE: out std_logic;
+		MPULSE: out std_logic);
+ 
+end component;
+
+component g30_HMS_Counter
+port( reset: in std_logic; 
+		clock, sec_clock, load_enable: in std_logic;
+		H_Set: in std_logic_vector(4 downto 0);
+		M_Set, S_Set: in std_logic_vector(5 downto 0);
+		Hours: out std_logic_vector(4 downto 0);
+		Minutes, Seconds: out std_logic_vector(5 downto 0);
+		end_of_day: out std_logic );
+end component;
+
+component g30_YMD_Counter
+port( reset: in std_logic; 
+		clock: in std_logic;
+		day_count_en:in std_logic;
+		load_enable: in std_logic;
+		Y_Set: in std_logic_vector (11 downto 0);
+		M_Set: in std_logic_vector (3 downto 0);
+		D_Set: in std_logic_vector (4 downto 0);
+		Years:out std_logic_vector (11 downto 0);
+		Months: out std_logic_vector (3 downto 0);
+		Days: out std_logic_vector (4 downto 0));
+
+end component;
+
+component g30_Seconds_to_Days is
+		port ( seconds				:	in unsigned(16 downto 0);
+			day_fraction		:	out unsigned(39 downto 0) ); 
+end component;
+
+
+signal hours: std_logic_vector(4 downto 0);
+signal minutes, seconds: std_logic_vector(5 downto 0);
+signal Epulse,Mpulse,end_of_day: std_logic;		
+signal years:std_logic_vector(11 downto 0);
+signal months: std_logic_vector (3 downto 0);
+signal days:std_logic_vector (4 downto 0);
+signal HMSdone,YMDdone,CountDone: std_logic;
+signal Nsecs: unsigned (16 downto 0);
+signal Ndays: unsigned (14 downto 0):="000000000000000";
+signal dayfrac: unsigned (39 downto 0);
+
+--
+signal JDD: unsigned(54 downto 0);
+signal frac: unsigned (69 downto 0);
+signal mult: unsigned (84 downto 0);
+signal cal1,cal2: unsigned (75 downto 0);
+signal mtcinter: unsigned(74 downto 0);
+begin
+
+epulseproducer: g30_Basic_Timer
+Port Map( reset=>reset, clk=>clock, enable=>enable, EPULSE=>epulse,MPULSE=>mpulse);
+
+HMScounter: g30_HMS_Counter
+Port Map(reset=>reset, clock=>clock, sec_clock=>clock, load_enable=>load_enable, H_Set=>"00000", M_Set=>"000000",
+		S_Set=>"000000", Hours=>hours, Minutes=>minutes,Seconds=>seconds, end_of_day=>end_of_day);
+		
+
+YMDcounter: g30_YMD_Counter
+Port Map(reset=>reset,clock=>clock, day_count_en=>end_of_day, load_enable=>load_enable, Y_Set=>"011111010000",M_Set=>"0001",D_Set=>"00110",Years=>years,
+			Months=>months, Days=>days);
+
+--test signal
+--ess:process (epulse,seconds,hours,minutes)
+--begin
+--ep<=epulse;
+--se<=seconds;
+--hr<=hours;
+--mt<=minutes;
+--end process;
+
+--endofday: process (end_of_day)
+--begin
+--eod<=end_of_day;
+--end process;
+--
+--yeardisplay: process (years)
+--begin 
+--YR<=years;
+--
+--end process;			
+--counting HMS 
+HMScount: Process (hours,minutes,seconds,Eminute_f,Ehour_f,Esecond_f,Eyear_f,Emonth_f,Eday_f)
+begin
+		if hours=Ehour_f and minutes=Eminute_f and seconds=Esecond_f then
+			HMSdone<='1';
+		else
+			HMSdone<='0';
+		end if;
+		
+end process;	
+
+--counting YMD
+
+
+YMDcount: Process (years,months,days)
+begin
+		if years=Eyear_f and months=Emonth_f and days=Eday_f then
+			YMDdone<='1';
+			
+		else
+			YMDdone<='0';
+		end if;
+--yd<=YMDdone;
+end process;
+
+--determine the end of the counting process
+countProcess: Process (HMSdone,YMDdone)
+begin 
+		if HMSdone='1' and YMDdone='1' then 
+			CountDone<='1';
+		else
+			CountDone<='0';
+		end if;
+
+end process;
+
+--calculate Nsecs 
+Nsecs<=To_unsigned(To_integer(unsigned(Ehour_f))*3600,17)+ To_unsigned(To_integer(unsigned(Eminute_f))*60,17)+unsigned("00000000000"& Esecond_f);
+
+
+--calculate Ndays	
+Ndayscalc: Process(YMDdone, end_of_day,clock)
+begin
+		if clock = '1' and clock'event then
+			if YMDdone = '0' and end_of_day = '1' then Ndays <=Ndays + 1;
+			else Ndays <= Ndays;
+--			nd<=Ndays;
+			end if;
+		end if;
+end process;
+
+--calculate dayfrac
+
+dayfraccalc:g30_Seconds_to_Days
+Port Map(seconds=>Nsecs, day_fraction=>dayfrac);
+--df<=dayfrac;
+--calculate JD2000 when the counting is done
+JDcalc: process(CountDone)
+begin
+		if CountDone='1' then 
+			JDD<=Ndays & dayfrac;
+			
+		end if;
+
+end process;
+
+mult<="0000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+frac<="0000000000101111001011111001100001110100000000000000000000000000000000";
+mtcinter<="000000000000000101111001011111001100001110100000000000000000000000000000000";
+
+result: process(CountDone,JDD,mult,frac)
+begin
+JD2000<=JDD;
+if CountDone='1' then
+mult<=JDD * "111110010010011010001001110011";
+			
+frac<= mult(69 downto 0)- "0000000000101111001011111001100001110100000000000000000000000000000000";
+			               
+mtcinter<=("11000" * frac);
+
+MTC<= mtcinter;
+MHours<= std_logic_vector(mtcinter(74 downto 70));
+cal1<= mtcinter(69 downto 0)*"111100";
+MMinutes<= std_logic_vector(cal1(75 downto 70));
+cal2<=cal1(69 downto 0)*"111100";
+MSeconds<=std_logic_vector(cal2(75 downto 70));
+end if;
+end process;
+end behavior;

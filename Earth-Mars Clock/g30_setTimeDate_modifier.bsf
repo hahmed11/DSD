@@ -1,0 +1,127 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 16 16 240 208)
+	(text "g30_setTimeDate_modifier" (rect 5 0 137 12)(font "Arial" ))
+	(text "inst" (rect 8 176 25 188)(font "Arial" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "EHours[4..0]" (rect 0 0 62 12)(font "Arial" ))
+		(text "EHours[4..0]" (rect 21 27 83 39)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 3))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "zoneNum[4..0]" (rect 0 0 71 12)(font "Arial" ))
+		(text "zoneNum[4..0]" (rect 21 43 92 55)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 3))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "DSTsw9" (rect 0 0 40 12)(font "Arial" ))
+		(text "DSTsw9" (rect 21 59 61 71)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64)(line_width 1))
+	)
+	(port
+		(pt 0 80)
+		(input)
+		(text "Days[4..0]" (rect 0 0 53 12)(font "Arial" ))
+		(text "Days[4..0]" (rect 21 75 74 87)(font "Arial" ))
+		(line (pt 0 80)(pt 16 80)(line_width 3))
+	)
+	(port
+		(pt 0 96)
+		(input)
+		(text "Months[3..0]" (rect 0 0 61 12)(font "Arial" ))
+		(text "Months[3..0]" (rect 21 91 82 103)(font "Arial" ))
+		(line (pt 0 96)(pt 16 96)(line_width 3))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "Years[11..0]" (rect 0 0 61 12)(font "Arial" ))
+		(text "Years[11..0]" (rect 21 107 82 119)(font "Arial" ))
+		(line (pt 0 112)(pt 16 112)(line_width 3))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "ESeconds[5..0]" (rect 0 0 75 12)(font "Arial" ))
+		(text "ESeconds[5..0]" (rect 21 123 96 135)(font "Arial" ))
+		(line (pt 0 128)(pt 16 128)(line_width 3))
+	)
+	(port
+		(pt 0 144)
+		(input)
+		(text "EMinutes[5..0]" (rect 0 0 70 12)(font "Arial" ))
+		(text "EMinutes[5..0]" (rect 21 139 91 151)(font "Arial" ))
+		(line (pt 0 144)(pt 16 144)(line_width 3))
+	)
+	(port
+		(pt 224 32)
+		(output)
+		(text "earthSeconds[5..0]" (rect 0 0 93 12)(font "Arial" ))
+		(text "earthSeconds[5..0]" (rect 110 27 203 39)(font "Arial" ))
+		(line (pt 224 32)(pt 208 32)(line_width 3))
+	)
+	(port
+		(pt 224 48)
+		(output)
+		(text "earthMinutes[5..0]" (rect 0 0 88 12)(font "Arial" ))
+		(text "earthMinutes[5..0]" (rect 115 43 203 55)(font "Arial" ))
+		(line (pt 224 48)(pt 208 48)(line_width 3))
+	)
+	(port
+		(pt 224 64)
+		(output)
+		(text "earthHours[4..0]" (rect 0 0 80 12)(font "Arial" ))
+		(text "earthHours[4..0]" (rect 123 59 203 71)(font "Arial" ))
+		(line (pt 224 64)(pt 208 64)(line_width 3))
+	)
+	(port
+		(pt 224 80)
+		(output)
+		(text "EDays[4..0]" (rect 0 0 60 12)(font "Arial" ))
+		(text "EDays[4..0]" (rect 143 75 203 87)(font "Arial" ))
+		(line (pt 224 80)(pt 208 80)(line_width 3))
+	)
+	(port
+		(pt 224 96)
+		(output)
+		(text "EMonths[3..0]" (rect 0 0 68 12)(font "Arial" ))
+		(text "EMonths[3..0]" (rect 135 91 203 103)(font "Arial" ))
+		(line (pt 224 96)(pt 208 96)(line_width 3))
+	)
+	(port
+		(pt 224 112)
+		(output)
+		(text "EYears[11..0]" (rect 0 0 68 12)(font "Arial" ))
+		(text "EYears[11..0]" (rect 135 107 203 119)(font "Arial" ))
+		(line (pt 224 112)(pt 208 112)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 208 176)(line_width 1))
+	)
+)

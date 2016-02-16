@@ -1,0 +1,9 @@
+
+State Machine - |g30_all_functinal_clock|g30_Controller:controller|y_present
+Name y_present.F y_present.E y_present.D y_present.C y_present.B y_present.A 
+y_present.A 0 0 0 0 0 0 
+y_present.B 0 0 0 0 1 1 
+y_present.C 0 0 0 1 0 1 
+y_present.D 0 0 1 0 0 1 
+y_present.E 0 1 0 0 0 1 
+y_present.F 1 0 0 0 0 1 

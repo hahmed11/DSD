@@ -1,0 +1,126 @@
+--------------------------------------------------------------------------------------
+Timing Analyzer Summary
+--------------------------------------------------------------------------------------
+
+Type           : Worst-case tsu
+Slack          : N/A
+Required Time  : None
+Actual Time    : 42.339 ns
+From           : DSTsw9
+To             : LCD1[1]
+From Clock     : --
+To Clock       : sw0_3[3]
+Failed Paths   : 0
+
+Type           : Worst-case tco
+Slack          : N/A
+Required Time  : None
+Actual Time    : 28.480 ns
+From           : LCD3[1]
+To             : segment2[5]
+From Clock     : clock
+To Clock       : --
+Failed Paths   : 0
+
+Type           : Worst-case th
+Slack          : N/A
+Required Time  : None
+Actual Time    : 12.800 ns
+From           : sw4_8[0]
+To             : LCD1[0]
+From Clock     : --
+To Clock       : clock
+Failed Paths   : 0
+
+Type           : Clock Setup: 'clock'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 16.99 MHz ( period = 58.868 ns )
+From           : g30_Controller:controller|y_present.D
+To             : LCD1[1]
+From Clock     : clock
+To Clock       : clock
+Failed Paths   : 0
+
+Type           : Clock Setup: 'sw4_8[3]'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 22.86 MHz ( period = 43.736 ns )
+From           : EM_Set[0]
+To             : g30_UTC_to_MTC:UTC2MTC|JDD[38]
+From Clock     : sw4_8[3]
+To Clock       : sw4_8[3]
+Failed Paths   : 0
+
+Type           : Clock Setup: 'sw4_8[4]'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 22.93 MHz ( period = 43.604 ns )
+From           : EM_Set[0]
+To             : g30_UTC_to_MTC:UTC2MTC|JDD[38]
+From Clock     : sw4_8[4]
+To Clock       : sw4_8[4]
+Failed Paths   : 0
+
+Type           : Clock Setup: 'aReset'
+Slack          : N/A
+Required Time  : None
+Actual Time    : 33.98 MHz ( period = 29.428 ns )
+From           : g30_UTC_to_MTC:UTC2MTC|JDD[18]
+To             : g30_UTC_to_MTC:UTC2MTC|mult[63]
+From Clock     : aReset
+To Clock       : aReset
+Failed Paths   : 0
+
+Type           : Clock Hold: 'clock'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : g30_UTC_to_MTC:UTC2MTC|Ndays[11]
+To             : g30_UTC_to_MTC:UTC2MTC|JDD[51]~_Duplicate_1
+From Clock     : clock
+To Clock       : clock
+Failed Paths   : 7341
+
+Type           : Clock Hold: 'sw4_8[3]'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : ES_Set[0]
+To             : g30_UTC_to_MTC:UTC2MTC|JDD[0]~_Duplicate_2
+From Clock     : sw4_8[3]
+To Clock       : sw4_8[3]
+Failed Paths   : 886
+
+Type           : Clock Hold: 'sw4_8[4]'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : ES_Set[0]
+To             : g30_UTC_to_MTC:UTC2MTC|JDD[0]~_Duplicate_2
+From Clock     : sw4_8[4]
+To Clock       : sw4_8[4]
+Failed Paths   : 890
+
+Type           : Clock Hold: 'aReset'
+Slack          : Not operational: Clock Skew > Data Delay
+Required Time  : None
+Actual Time    : N/A
+From           : g30_UTC_to_MTC:UTC2MTC|mult[26]
+To             : g30_UTC_to_MTC:UTC2MTC|frac[26]
+From Clock     : aReset
+To Clock       : aReset
+Failed Paths   : 42
+
+Type           : Total number of failed paths
+Slack          : 
+Required Time  : 
+Actual Time    : 
+From           : 
+To             : 
+From Clock     : 
+To Clock       : 
+Failed Paths   : 9159
+
+--------------------------------------------------------------------------------------
+

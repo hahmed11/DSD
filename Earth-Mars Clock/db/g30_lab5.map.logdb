@@ -1,0 +1,8 @@
+v1
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,g30_UTC_to_MTC:UTC2MTC|lpm_mult:Mult1|mult_fct:auto_generated|mac_out2,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,g30_UTC_to_MTC:UTC2MTC|lpm_mult:Mult1|mult_fct:auto_generated|mac_out10,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,g30_UTC_to_MTC:UTC2MTC|lpm_mult:Mult1|mult_fct:auto_generated|mac_out12,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,g30_UTC_to_MTC:UTC2MTC|lpm_mult:Mult1|mult_fct:auto_generated|mac_out14,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,g30_UTC_to_MTC:UTC2MTC|lpm_mult:Mult1|mult_fct:auto_generated|mac_out8,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,g30_UTC_to_MTC:UTC2MTC|lpm_mult:Mult1|mult_fct:auto_generated|mac_out6,
+DSP_BALANCING_IMPLEMENTATION,DSP_BLOCKS,g30_UTC_to_MTC:UTC2MTC|lpm_mult:Mult1|mult_fct:auto_generated|mac_out4,
